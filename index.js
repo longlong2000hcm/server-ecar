@@ -54,12 +54,12 @@ app.get('/users', (req, res) => {
 app.get('/users/:id',
         passport.authenticate('basic', { session: false }),
         (req, res) => {
-          db.query('SELECT id, username FROM users WHERE id = ?', [req.params.id]).then(results => {
+          db.query('SELECT idUser, username FROM users WHERE idUser = ?', [req.params.id]).then(results => {
             res.json(results);
           })
         });
 
-app.post('/users', (req, res) => {
+app.post('/register', (req, res) => {
   let username = req.body.username.trim();
   let password = req.body.password.trim();
 
