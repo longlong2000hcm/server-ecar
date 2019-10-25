@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors())
 
 passport.use(new Strategy((username, password, cb) => {
-  db.query('SELECT id, username, password FROM users WHERE username = ?', [username]).then(dbResults => {
+  db.query('SELECT username, password FROM users WHERE username = ?', [username]).then(dbResults => {
 
     if(dbResults.length == 0)
     {
@@ -46,7 +46,7 @@ app.get('/hello-protected',
 
 
 app.get('/users', (req, res) => {
-  db.query('SELECT id, username FROM users').then(results => {
+  db.query('SELECT idUser, username FROM users').then(results => {
     res.json(results);
   })
 })
