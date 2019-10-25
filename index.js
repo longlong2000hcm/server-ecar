@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 // Setting up bodyParser to use json and set it to req.body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.urlencoded({ extended: true }));
 
 // INstantiating the express-jwt middleware
 const jwtMW = exjwt({
@@ -30,7 +30,8 @@ const jwtMW = exjwt({
 
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    let username = req.body.username.trim();
+    let password = req.body.password.trim();
     db.query('SELECT username, password, idUser FROM users WHERE username = ?', [username]).then(dbResults => {
 
         if(dbResults.length == 0)
@@ -45,7 +46,7 @@ app.post('/login', (req, res) => {
           if(bcryptResult == true)
           {
             let token = jwt.sign({ id: dbResults[0].idUser, username: dbResults[0].username }, 'madebyken', { expiresIn: 129600 }); // Sigining the token
-            res.json({
+            res.status(200).json({
                 sucess: true,
                 err: null,
                 token
@@ -60,6 +61,9 @@ app.post('/login', (req, res) => {
       }).catch(dbError => cb(err))
     });
     
+app.post('/take', (req, res)=> {
+  console.log(req.body);
+})
 
 app.post('/register', (req, res) => {
     let username = req.body.username.trim();
